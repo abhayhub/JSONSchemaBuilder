@@ -3,7 +3,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
+import { v4 as uuid } from "uuid";
 
 // defined a interface
 interface FieldItemProps {
@@ -17,6 +18,33 @@ export const FieldItem = ({ field, onChange, onDelete }: FieldItemProps) => {
   const updateField = (key: keyof Field, value: any) => {
     onChange({ ...field, [key]: value });
   };
+
+  // Update child field
+const updateChild = (index: number, updatedChild: Field) => {
+  const updatedChildren = [...(field.children || [])];
+  updatedChildren[index] = updatedChild;
+  onChange({ ...field, children: updatedChildren });
+};
+
+//Add child field
+const addChild = () => {
+  const newChild: Field = {
+    id: uuid(),
+    name: "",
+    type: "string",
+    required: false,
+  };
+  onChange({
+    ...field,
+    children: [...(field.children || []), newChild],
+  });
+};
+
+// Delete child field
+const deleteChild = (index: number) => {
+  const updatedChildren = field.children?.filter((_, i) => i !== index);
+  onChange({ ...field, children: updatedChildren });
+};
 
   return (
       <div className="ml-4 mb-4 border-l pl-4">
@@ -54,11 +82,27 @@ export const FieldItem = ({ field, onChange, onDelete }: FieldItemProps) => {
         <Button variant="ghost" size="icon" onClick={onDelete}>
           <Trash2 className="w-4 h-4 text-red-500" />
         </Button>
-        
-        </div>
-      </div>
+
+        {/* Render children recursively */}
+        {field.type === "nested" && (
+          <div>
+            {(field.children || []).map((child, index) => (
+              <FieldItem
+              key={child.id}
+              field={child}
+              onChange={(updated) => updateChild(index, updated)}
+              onDelete={() => deleteChild(index)}
+      />
+    ))}
+    <Button onClick={addChild} className="mt-2">
+      <Plus className="mr-2 w-4 h-4" />
+      Add Item
+    </Button>
+    </div>
+  )}
+  </div>
+  </div>
   );
 };
-
 
 
