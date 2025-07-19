@@ -1,7 +1,9 @@
 import type { Field, FieldType } from "@/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Trash2 } from "lucide-react";
 
 // defined a interface
 interface FieldItemProps {
@@ -47,6 +49,12 @@ export const FieldItem = ({ field, onChange, onDelete }: FieldItemProps) => {
           checked={field.required}
           onCheckedChange={(checked) => updateField("required", checked)}
         />
+
+        {/* Delete field button */}
+        <Button variant="ghost" size="icon" onClick={onDelete}>
+          <Trash2 className="w-4 h-4 text-red-500" />
+        </Button>
+        
         </div>
       </div>
   );

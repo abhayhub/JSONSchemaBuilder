@@ -1,4 +1,3 @@
-// import Schema from './components/JsonBuilder'
 
 
 function App() {
