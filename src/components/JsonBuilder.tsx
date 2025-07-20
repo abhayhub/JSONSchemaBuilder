@@ -27,6 +27,13 @@ export default function SchemaBuilder() {
   setValues(updated);
 };
 
+// updatefield values
+const updateField = (idx: number, updated: Field) => {
+  const newValues = [...values];
+  newValues[idx] = updated;
+  setValues(newValues);
+};
+
   return (
     <div className="flex min-h-screen">
       <div className="w-1/2 p-6">
@@ -35,7 +42,7 @@ export default function SchemaBuilder() {
           <FieldItem
           key={field.id}
           field={field}
-          onChange={() => ()}
+          onChange={(updated) => (updateField(idx, updated))}
           onDelete={() => deleteField(idx)}
           />
           ))}
