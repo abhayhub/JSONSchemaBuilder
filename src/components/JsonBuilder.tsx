@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-export default function SchemaBuilder() {
+export default function JsonBuilder() {
   const [values, setValues] = useState<Field[]>([]);
   
   // adding fields
@@ -47,6 +47,7 @@ const CreateJSON = (fields: Field[]): any => {
       Output[v.name] = v.type === "string" ? "STRING" : "number";
     }
   });
+  // console.log(Output);
   return Output;
 };
 
@@ -62,7 +63,7 @@ const CreateJSON = (fields: Field[]): any => {
           onDelete={() => deleteField(idx)}
           />
           ))}
-        <Button onClick={() => {AddField}}>+ Add Item</Button>
+        <Button onClick={AddField}>+ Add Item</Button>
       </div>
       
       {/* ouput section */}

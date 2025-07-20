@@ -38,6 +38,7 @@ const addChild = () => {
     ...field,
     children: [...(field.children || []), newChild],
   });
+  // console.log("child added successfulyy");
 };
 
 // Delete child field
@@ -48,60 +49,57 @@ const deleteChild = (index: number) => {
 
   return (
       <div className="ml-4 mb-4 border-l pl-4">
+      {/* Horizontal input row */}
       <div className="flex items-center gap-2 mb-2">
-
-        {/* Field name input */}
         <Input
-          placeholder="Field name"
-          value={field.name}
-          onChange={(e) => updateField("name", e.target.value)}
-          className="w-[160px]"
+        placeholder="Field name"
+        value={field.name}
+        onChange={(e) => updateField("name", e.target.value)}
+        className="w-[160px]"
         />
-        {/* Type selector */}
-        <Select
-          value={field.type}
-          onValueChange={(value: FieldType) => updateField("type", value)}
-        >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue placeholder="Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="string">string</SelectItem>
-            <SelectItem value="number">number</SelectItem>
-            <SelectItem value="nested">nested</SelectItem>
-          </SelectContent>
-        </Select>
+      
+      <Select
+      value={field.type}
+      onValueChange={(value: FieldType) => updateField("type", value)}
+    >
+      <SelectTrigger className="w-[120px]">
+        <SelectValue placeholder="Type" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="string">string</SelectItem>
+        <SelectItem value="number">number</SelectItem>
+        <SelectItem value="nested">nested</SelectItem>
+      </SelectContent>
+    </Select>
 
-        {/* Required switch */}
-        <Switch
-          checked={field.required}
-          onCheckedChange={(checked) => updateField("required", checked)}
-        />
+    <Switch
+      checked={field.required}
+      onCheckedChange={(checked) => updateField("required", checked)}
+    />
 
-        {/* Delete field button */}
-        <Button variant="ghost" size="icon" onClick={onDelete}>
-          <Trash2 className="w-4 h-4 text-red-500" />
-        </Button>
-
-        {/* Render children recursively */}
-        {field.type === "nested" && (
-          <div>
-            {(field.children || []).map((child, index) => (
-              <FieldItem
-              key={child.id}
-              field={child}
-              onChange={(updated) => updateChild(index, updated)}
-              onDelete={() => deleteChild(index)}
-      />
-    ))}
-    <Button onClick={addChild} className="mt-2">
-      <Plus className="mr-2 w-4 h-4" />
-      Add Item
+    <Button variant="ghost" size="icon" onClick={onDelete}>
+      <Trash2 className="w-4 h-4 text-red-500" />
     </Button>
+  </div>
+
+  {/* Render children recursively */}
+  {field.type === "nested" && (
+    <div className="ml-4 mt-2">
+      {(field.children || []).map((child, index) => (
+        <FieldItem
+          key={child.id}
+          field={child}
+          onChange={(updated) => updateChild(index, updated)}
+          onDelete={() => deleteChild(index)}
+        />
+      ))}
+      <Button onClick={addChild} className="mt-2">
+        <Plus className="mr-2 w-4 h-4" />
+        Add Item
+      </Button>
     </div>
   )}
-  </div>
-  </div>
+</div>
   );
 };
 
